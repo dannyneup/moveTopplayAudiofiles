@@ -1,7 +1,6 @@
 import os
-import logging
 from eyed3 import id3
-from shutil import copy, move
+from shutil import move
 
 
 def create_audiofilelist(src_path: str):
@@ -10,7 +9,7 @@ def create_audiofilelist(src_path: str):
         full_path = os.path.join(src_path, path)
         if os.path.isdir(full_path):
             filelist += create_audiofilelist(full_path)
-        elif os.path.isfile(full_path) and os.path.splitext(full_path)[-1] in ['.mp3', '.wav', '.aif', '.aif']:
+        elif os.path.isfile(full_path) and os.path.splitext(full_path)[1] in ['.mp3', '.wav', '.aif', '.aif']:
             filelist.append(full_path)
     return filelist
 
@@ -22,8 +21,6 @@ def move_file(srcfile: str, dst: str):
     if os.path.basename(srcfile) in files_in_dst:
         log.write(f"file {srcfile} already exists in destination folder {dst}.\n")
     else:
-        # copy(srcfile, dst)
-        # log.writelines(f"file {srcfile} copyed to folder {dst}.\n")
         move(srcfile, dst)
         log.write(f"file {srcfile} moved to folder {dst}.\n")
 
@@ -76,4 +73,4 @@ def create_top_play_filelist(path_music: str, path_sorted: str):
 
 if __name__ == '__main__':
     log = open("log.txt", "w")
-    create_top_play_filelist("Assets", "Crates")
+    create_top_play_filelist("Music", "Crates")
